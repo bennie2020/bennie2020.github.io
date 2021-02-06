@@ -1,0 +1,67 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>播放器</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <style type="text/css">
+        body,
+        html,
+        div {
+            background-color: #000;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            color: #aaa;
+        }
+        #tc_player,#form{
+        	display: none;
+        }
+
+        #form{
+        	flex-direction: row;
+        	justify-content: center;
+        	align-items: center;
+        }
+        #form button{
+        	margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tc_player"></div>
+   	<div id="form">
+   		<input type="url" id="url" name="url"/>
+   		<button id="go">GO</button>
+   	</div>
+    <script src="https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.3.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        function getQuery(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURI(r[2]);
+            return null;
+        }
+        const url = getQuery('url');
+        if(!!url){
+        	document.getElementById('tc_player').style.display = 'block'
+		   var tcPlayer = new TcPlayer('tc_player', {
+		        "m3u8": url,
+		        "autoplay": true
+	        });
+        }else{
+			document.getElementById('form').style.display = 'flex'
+        }
+        function goto(url) {
+        	 const loc = window.location;
+        	 loc.href = `${loc.origin}${loc.pathname}?url=${url}`
+        }
+        document.getElementById('go').onclick=function(){
+        	const url = document.getElementById('url').value;
+        	url && goto(url)
+        }
+    </script>
+</body>
+
+</html>
